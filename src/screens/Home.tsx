@@ -29,6 +29,7 @@ export function Home() {
         _contentContainerStyle={{ px: 8 }}
         my={10}
         maxH={10}
+        minH={10}
         renderItem={({ item }) => {
           return (
             <Group
