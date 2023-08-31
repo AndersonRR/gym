@@ -43,7 +43,7 @@ export function AppRoutes() {
       }}
     >
       <Screen
-        name='home'
+        name="home"
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
@@ -57,7 +57,7 @@ export function AppRoutes() {
       />
 
       <Screen
-        name='history'
+        name="history"
         component={History}
         options={{
           tabBarIcon: ({ color }) => (
@@ -71,7 +71,7 @@ export function AppRoutes() {
       />
 
       <Screen
-        name='profile'
+        name="profile"
         component={Profile}
         options={{
           tabBarIcon: ({ color }) => (
@@ -85,7 +85,7 @@ export function AppRoutes() {
       />
 
       <Screen
-        name='exercise'
+        name="exercise"
         component={Exercise}
         options={{
           tabBarButton: () => null,
