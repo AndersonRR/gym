@@ -97,6 +97,7 @@ export function Profile() {
           mb={9}
         >
           <Heading
+            fontFamily="heading"
             color="gray.200"
             fontSize="md"
             mb={2}

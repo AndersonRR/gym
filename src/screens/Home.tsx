@@ -51,6 +51,7 @@ export function Home() {
           mb={5}
         >
           <Heading
+            fontFamily="heading"
             color="gray.200"
             fontSize="md"
           >

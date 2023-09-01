@@ -39,6 +39,7 @@ export function Exercise() {
           alignItems="center"
         >
           <Heading
+            fontFamily="heading"
             color="gray.100"
             fontSize="lg"
             flexShrink={1}

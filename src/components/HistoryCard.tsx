@@ -19,6 +19,7 @@ export function HistoryCard() {
           color="white"
           fontSize="md"
           textTransform="capitalize"
+          fontFamily="heading"
         >
           Costas
         </Heading>

@@ -28,6 +28,7 @@ export function ExerciseCard({ ...rest }: Props) {
         />
         <VStack flex={1}>
           <Heading
+            fontFamily="heading"
             fontSize="lg"
             color="white"
           >
