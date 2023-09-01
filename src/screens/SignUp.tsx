@@ -1,14 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
-import { Center, Heading, Image, ScrollView, Text, VStack } from 'native-base';
+import { Center, Heading, Image, ScrollView, Text, VStack, useToast } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { api } from '@services/api';
 
 import BackgroundImg from '@assets/background.png';
 import LogoSvg from '@assets/logo.svg';
 
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+import { AppError } from '@utils/AppError';
 
 type FormDataProps = {
   name: string;
@@ -18,9 +20,9 @@ type FormDataProps = {
 };
 
 const signUpSchema = yup.object({
-  name: yup.string().required('Nome é obrigatário'),
-  email: yup.string().email('E-mail inválido').required('E-mail é obrigatário'),
-  password: yup.string().required('Senha é obrigatária').min(6, 'No mínimo 6 caracteres'),
+  name: yup.string().required('Nome é obrigatório'),
+  email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
+  password: yup.string().required('Senha é obrigatória').min(6, 'No mínimo 6 caracteres'),
   password_confirm: yup
     .string()
     .required('Confirmação de senha é obrigatória')
@@ -29,6 +31,7 @@ const signUpSchema = yup.object({
 
 export function SignUp() {
   const navigation = useNavigation();
+  const toast = useToast();
   const {
     control,
     handleSubmit,
@@ -41,7 +44,22 @@ export function SignUp() {
     navigation.goBack();
   }
 
-  function handleSignIn(data: FormDataProps) {}
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    try {
+      const response = await api.post('/users', { name, email, password });
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente em alguns instantes.';
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500',
+      });
+    }
+  }
 
   return (
     <ScrollView
@@ -135,14 +153,14 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={errors.password_confirm?.message}
-                onSubmitEditing={handleSubmit(handleSignIn)}
+                onSubmitEditing={handleSubmit(handleSignUp)}
                 returnKeyType="send"
               />
             )}
           />
           <Button
             title="Criar e acessar"
-            onPress={handleSubmit(handleSignIn)}
+            onPress={handleSubmit(handleSignUp)}
           />
         </Center>
 
