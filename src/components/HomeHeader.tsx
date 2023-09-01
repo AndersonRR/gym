@@ -3,8 +3,13 @@ import { Heading, HStack, VStack, Text, Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { UserPhoto } from './UserPhoto';
+import { useAuth } from '@hooks/useAuth';
+
+import defaultUserPhotoImg from '@assets/userPhotoDefault.png';
 
 export function HomeHeader() {
+  const { user, signOut } = useAuth();
+
   return (
     <HStack
       bg="gray.600"
@@ -14,7 +19,7 @@ export function HomeHeader() {
       alignItems="center"
     >
       <UserPhoto
-        source={{ uri: 'https://github.com/andersonrr.png' }}
+        source={user.avatar ? { uri: user.avatar } : defaultUserPhotoImg}
         alt="Imagem do usuário"
         size={16}
         mr={4}
@@ -32,11 +37,11 @@ export function HomeHeader() {
           color="gray.100"
           fontSize="md"
         >
-          Anderson
+          {user.name}
         </Heading>
       </VStack>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={signOut}>
         <Icon
           as={MaterialIcons}
           name="logout"
