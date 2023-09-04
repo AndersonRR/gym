@@ -11,6 +11,8 @@ import { api } from '@services/api';
 import { useAuth } from '@hooks/useAuth';
 import { AppError } from '@utils/AppError';
 
+import defaultUserPhotoImg from '@assets/userPhotoDefault.png';
+
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { UserPhoto } from '@components/UserPhoto';
@@ -51,7 +53,6 @@ const profileSchema = yup.object({
 export function Profile() {
   const [isUpdating, setUpdating] = useState(false);
   const [photoIsLoading, setPhotoIsLoading] = useState(false);
-  const [userPhoto, setUserPhoto] = useState('https://github.com/andersonrr.png');
 
   const toast = useToast();
   const { user, updateUserProfile } = useAuth();
@@ -89,6 +90,31 @@ export function Profile() {
           return Alert.alert('Imagem muito grande. Tamanho máximo é 5 MB.');
         }
       }
+
+      const fileExtension = photoSelected.assets[0].uri.split('.').pop();
+      const photoFile = {
+        name: `${user.name}.${fileExtension}`.toLocaleLowerCase(),
+        uri: photoSelected.assets[0].uri,
+        type: `${photoSelected.assets[0].type}/${fileExtension}`,
+      } as any;
+
+      const userPhotoUploadForm = new FormData();
+      userPhotoUploadForm.append('avatar', photoFile);
+
+      const response = await api.patch('/users/avatar', userPhotoUploadForm, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      user.avatar = response.data.avatar;
+      updateUserProfile(user);
+
+      toast.show({
+        title: 'Foto atualizada com sucesso!',
+        placement: 'top',
+        bgColor: 'green.500',
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -144,7 +170,11 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: userPhoto }}
+              source={
+                user.avatar
+                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+                  : defaultUserPhotoImg
+              }
               alt="Foto do usuário"
               size={33}
             />
