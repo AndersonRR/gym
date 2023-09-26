@@ -11,9 +11,10 @@ import { Group } from '@components/Group';
 import { HomeHeader } from '@components/HomeHeader';
 import { ExerciseCard } from '@components/ExerciseCard';
 import { Loading } from '@components/Loading';
+import { useQuery } from '@tanstack/react-query';
 
 export function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [groups, setGroups] = useState<string[]>([]);
   const [exercises, setExercises] = useState<ExerciseDTO[]>([]);
   const [groupSelected, setGroupSelected] = useState(groups[0]);
@@ -30,7 +31,7 @@ export function Home() {
       const response = await api.get('/groups');
 
       setGroups(response.data);
-      setGroupSelected(groups[0]);
+      // setGroupSelected(groups[0]);
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.';
@@ -43,9 +44,20 @@ export function Home() {
     }
   }
 
+  const fetchExercises = useCallback(async () => {
+    const { data } = await api.get<ExerciseDTO[]>(`/exercises/bygroup/${groupSelected}`);
+
+    return data;
+  }, [groupSelected]);
+
+  const { isLoading, error, data, refetch } = useQuery<ExerciseDTO[]>(
+    ['exercises', groupSelected],
+    fetchExercises
+  );
+
   async function fetchExercisesByGroup() {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const response = await api.get(`/exercises/bygroup/${groupSelected}`);
 
       setExercises(response.data);
@@ -60,7 +72,7 @@ export function Home() {
         bgColor: 'red.500',
       });
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   }
 
@@ -68,11 +80,16 @@ export function Home() {
     fetchGroups();
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchExercisesByGroup();
-    }, [groupSelected])
-  );
+  useEffect(() => {
+    setExercises(data || []);
+  }, [data]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // fetchExercisesByGroup();
+  //     refetch();
+  //   }, [groupSelected])
+  // );
 
   return (
     <VStack flex={1}>

@@ -6,6 +6,9 @@ import { Routes } from './src/routes';
 import { THEME } from './src/theme';
 
 import { AuthContext, AuthContextProvider } from '@contexts/AuthContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });
@@ -17,7 +20,9 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      <AuthContextProvider>{fontsLoaded ? <Routes /> : <View />}</AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>{fontsLoaded ? <Routes /> : <View />}</AuthContextProvider>
+      </QueryClientProvider>
     </NativeBaseProvider>
   );
 }
