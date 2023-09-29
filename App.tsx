@@ -7,6 +7,8 @@ import { THEME } from './src/theme';
 
 import { AuthContext, AuthContextProvider } from '@contexts/AuthContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { clientPersister } from '@storage/queryClientPersister';
 
 const queryClient = new QueryClient();
 
@@ -20,9 +22,12 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider
+        persistOptions={{ persister: clientPersister }}
+        client={queryClient}
+      >
         <AuthContextProvider>{fontsLoaded ? <Routes /> : <View />}</AuthContextProvider>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </NativeBaseProvider>
   );
 }
