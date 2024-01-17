@@ -22,6 +22,7 @@ type RouteParamsProps = {
 
 export function Exercise() {
   const [isLoading, setIsLoading] = useState(true);
+
   const [sendingRegister, setSendingRegister] = useState(false);
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
   const navigation = useNavigation<AppNavigatorRoutesProps>();
@@ -73,11 +74,12 @@ export function Exercise() {
         const isAppError = error instanceof AppError;
         const title = isAppError
           ? error.message
-          : 'Não foi possível carregar os dados do exercício. Tá ligado MANO?????';
+          : 'Não foi possível carregar os dados do exercício. Só isso na verdade era pra mudar';
 
         toast.show({
           title,
           placement: 'top',
+
           bgColor: 'red.500',
         });
       } finally {
