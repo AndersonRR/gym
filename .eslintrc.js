@@ -25,7 +25,7 @@ module.exports = {
     {
       extends: ['plugin:@typescript-eslint/disable-type-checked'],
       files: ['./**/*.js'],
-    }
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -33,7 +33,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
   rules: {
     indent: ['error', 2, { SwitchCase: 1 }],
     'linebreak-style': ['error', 'unix'],
@@ -45,6 +45,7 @@ module.exports = {
     'react/display-name': 'off',
     'react/prop-types': 'off',
     'typescript-eslint/no-unsafe-argument': 'off',
+    'prettier/prettier': 'error',
   },
   settings: {
     react: {
