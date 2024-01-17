@@ -11,19 +11,6 @@
     "lint": "eslint --ext .tsx --ext .ts src/",
     "format": "prettier --check ./src"
   },
-  "lint-staged": {
-    "src/**/*.{ts,tsx}": [
-      "eslint --ext .tsx --ext .ts src/ --fix"
-    ],
-    "./src/**": [
-      "prettier --write ."
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.3",
     "@hookform/resolvers": "^3.3.1",
