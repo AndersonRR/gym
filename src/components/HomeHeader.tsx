@@ -21,6 +21,7 @@ export function HomeHeader() {
     >
       <UserPhoto
         source={
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           user.avatar
             ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
             : defaultUserPhotoImg
@@ -46,7 +47,7 @@ export function HomeHeader() {
         </Heading>
       </VStack>
 
-      <TouchableOpacity onPress={signOut}>
+      <TouchableOpacity onPress={() => signOut}>
         <Icon
           as={MaterialIcons}
           name="logout"

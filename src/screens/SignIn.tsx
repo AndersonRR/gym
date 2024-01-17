@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Center, Heading, Image, ScrollView, Text, VStack, Toast, useToast } from 'native-base';
+import { Center, Heading, Image, ScrollView, Text, VStack, useToast } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -12,6 +12,7 @@ import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
 import { AppError } from '@utils/AppError';
 import { useAuth } from '@hooks/useAuth';
+import { ImageSourcePropType, ImageURISource } from 'react-native';
 
 type FormDataProps = {
   email: string;
@@ -66,8 +67,8 @@ export function SignIn() {
         pb={16}
       >
         <Image
-          source={BackgroundImg}
-          defaultSource={BackgroundImg}
+          source={BackgroundImg as ImageSourcePropType}
+          defaultSource={BackgroundImg as ImageURISource}
           alt="Pessoas treinando"
           resizeMode="contain"
           position="absolute"
@@ -131,7 +132,7 @@ export function SignIn() {
 
           <Button
             title="Acessar"
-            onPress={handleSubmit(handleSignIn)}
+            onPress={(event) => void handleSubmit(handleSignIn)(event)}
             isLoading={isLoadingLogin}
           />
         </Center>

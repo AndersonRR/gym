@@ -13,6 +13,7 @@ import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import { AppError } from '@utils/AppError';
 import { useAuth } from '@hooks/useAuth';
+import { ImageSourcePropType, ImageURISource } from 'react-native';
 
 type FormDataProps = {
   name: string;
@@ -81,8 +82,8 @@ export function SignUp() {
         pb={16}
       >
         <Image
-          source={BackgroundImg}
-          defaultSource={BackgroundImg}
+          source={BackgroundImg as ImageSourcePropType}
+          defaultSource={BackgroundImg as ImageURISource}
           alt="Pessoas treinando"
           resizeMode="contain"
           position="absolute"
@@ -161,14 +162,14 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={errors.password_confirm?.message}
-                onSubmitEditing={handleSubmit(handleSignUp)}
+                onSubmitEditing={void handleSubmit(handleSignUp)}
                 returnKeyType="send"
               />
             )}
           />
           <Button
             title="Criar e acessar"
-            onPress={handleSubmit(handleSignUp)}
+            onPress={void handleSubmit(handleSignUp)}
             isLoading={isLoading}
           />
         </Center>

@@ -16,30 +16,31 @@ export function History() {
 
   const [exercises, setExercises] = useState<HistoryByDayDTO[]>([]);
 
-  async function fetchHistory() {
-    try {
-      setIsLoading(true);
-
-      const response = await api.get('/history');
-      setExercises(response.data);
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-      const title = isAppError ? error.message : 'Não foi possível carregar o histórico.';
-
-      toast.show({
-        title,
-        placement: 'top',
-        bgColor: 'red.500',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   useFocusEffect(
     useCallback(() => {
-      fetchHistory();
-    }, [])
+      async function fetchHistory() {
+        try {
+          setIsLoading(true);
+
+          const response = await api.get('/history');
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setExercises(response.data);
+        } catch (error) {
+          const isAppError = error instanceof AppError;
+          const title = isAppError ? error.message : 'Não foi possível carregar o histórico.';
+
+          toast.show({
+            title,
+            placement: 'top',
+            bgColor: 'red.500',
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      void fetchHistory();
+    }, [toast])
   );
 
   return (

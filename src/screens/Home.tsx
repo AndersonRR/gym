@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { HStack, VStack, FlatList, Heading, Text, useToast } from 'native-base';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 
@@ -26,59 +26,60 @@ export function Home() {
     navigation.navigate('exercise', { exerciseId });
   }
 
-  async function fetchGroups() {
-    try {
-      const response = await api.get('/groups');
-
-      setGroups(response.data);
-      // setGroupSelected(groups[0]);
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-      const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.';
-
-      toast.show({
-        title,
-        placement: 'top',
-        bgColor: 'red.500',
-      });
-    }
-  }
-
   const fetchExercises = useCallback(async () => {
     const { data } = await api.get<ExerciseDTO[]>(`/exercises/bygroup/${groupSelected}`);
 
     return data;
   }, [groupSelected]);
 
-  const { isLoading, error, data, refetch } = useQuery<ExerciseDTO[]>(
+  const { isLoading, data } = useQuery<ExerciseDTO[]>(
     ['exercises', groupSelected],
     fetchExercises
   );
 
-  async function fetchExercisesByGroup() {
-    try {
-      // setIsLoading(true);
-      const response = await api.get(`/exercises/bygroup/${groupSelected}`);
+  // async function fetchExercisesByGroup() {
+  //   try {
+  //     // setIsLoading(true);
+  //     const response = await api.get(`/exercises/bygroup/${groupSelected}`);
 
-      setExercises(response.data);
-      // setGroupSelected(groups[0]);
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-      const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.';
+  //     setExercises(response.data);
+  //     // setGroupSelected(groups[0]);
+  //   } catch (error) {
+  //     const isAppError = error instanceof AppError;
+  //     const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.';
 
-      toast.show({
-        title,
-        placement: 'top',
-        bgColor: 'red.500',
-      });
-    } finally {
-      // setIsLoading(false);
-    }
-  }
+  //     toast.show({
+  //       title,
+  //       placement: 'top',
+  //       bgColor: 'red.500',
+  //     });
+  //   } finally {
+  //     // setIsLoading(false);
+  //   }
+  // }
 
   useEffect(() => {
-    fetchGroups();
-  }, []);
+    async function fetchGroups() {
+      try {
+        const response = await api.get('/groups');
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setGroups(response.data);
+        // setGroupSelected(groups[0]);
+      } catch (error) {
+        const isAppError = error instanceof AppError;
+        const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.';
+
+        toast.show({
+          title,
+          placement: 'top',
+          bgColor: 'red.500',
+        });
+      }
+    }
+
+    void fetchGroups();
+  }, [toast]);
 
   useEffect(() => {
     setExercises(data || []);

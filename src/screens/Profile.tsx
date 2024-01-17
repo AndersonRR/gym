@@ -34,19 +34,19 @@ const profileSchema = yup.object({
     .string()
     .min(6, 'No mínimo 6 caracteres')
     .nullable()
-    .transform(value => (!!value ? value : null)),
+    .transform((value: string) => (value ? value : null)),
   confirm_password: yup
     .string()
     .oneOf([yup.ref('password')], 'As senhas devem ser iguais')
     .nullable()
-    .transform(value => (!!value ? value : null))
+    .transform((value: string) => (value ? value : null))
     .when('password', {
-      is: (Field: any) => Field,
+      is: (Field: string) => Field,
       then: schema =>
         schema
           .nullable()
           .required('Informe a confirmação da senha')
-          .transform(value => (!!value ? value : null)),
+          .transform((value: string) => (value ? value : null)),
     }),
 });
 
@@ -96,7 +96,7 @@ export function Profile() {
         name: `${user.name}.${fileExtension}`.toLocaleLowerCase(),
         uri: photoSelected.assets[0].uri,
         type: `${photoSelected.assets[0].type}/${fileExtension}`,
-      } as any;
+      } as never;
 
       const userPhotoUploadForm = new FormData();
       userPhotoUploadForm.append('avatar', photoFile);
@@ -107,8 +107,9 @@ export function Profile() {
         },
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       user.avatar = response.data.avatar;
-      updateUserProfile(user);
+      void updateUserProfile(user);
 
       toast.show({
         title: 'Foto atualizada com sucesso!',
@@ -171,6 +172,7 @@ export function Profile() {
           ) : (
             <UserPhoto
               source={
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 user.avatar
                   ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
                   : defaultUserPhotoImg
@@ -180,7 +182,7 @@ export function Profile() {
             />
           )}
 
-          <TouchableOpacity onPress={handleSelectPhoto}>
+          <TouchableOpacity onPress={() => void handleSelectPhoto()}>
             <Text
               color="green.500"
               fontWeight="bold"
@@ -279,7 +281,7 @@ export function Profile() {
           <Button
             title="Atualizar"
             mt={4}
-            onPress={handleSubmit(handleUpdateProfile)}
+            onPress={() => handleSubmit(handleUpdateProfile)}
             isLoading={isUpdating}
           />
         </VStack>

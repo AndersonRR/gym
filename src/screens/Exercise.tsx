@@ -35,25 +35,6 @@ export function Exercise() {
     navigation.goBack();
   }
 
-  async function fetchExerciseDetails() {
-    try {
-      setIsLoading(true);
-      const response = await api.get(`/exercises/${exerciseId}`);
-      setExercise(response.data);
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-      const title = isAppError ? error.message : 'Não foi possível carregar os dados do exercício.';
-
-      toast.show({
-        title,
-        placement: 'top',
-        bgColor: 'red.500',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   async function handleExerciseHistoryRegister() {
     try {
       setSendingRegister(true);
@@ -82,7 +63,26 @@ export function Exercise() {
   }
 
   useEffect(() => {
-    fetchExerciseDetails();
+    async function fetchExerciseDetails() {
+      try {
+        setIsLoading(true);
+        const response = await api.get(`/exercises/${exerciseId}`);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setExercise(response.data);
+      } catch (error) {
+        const isAppError = error instanceof AppError;
+        const title = isAppError ? error.message : 'Não foi possível carregar os dados do exercício.';
+
+        toast.show({
+          title,
+          placement: 'top',
+          bgColor: 'red.500',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    void fetchExerciseDetails();
   }, [exerciseId]);
 
   return (
@@ -184,7 +184,7 @@ export function Exercise() {
               <Button
                 title="Marcar como realizado"
                 isLoading={sendingRegister}
-                onPress={handleExerciseHistoryRegister}
+                onPress={() => void handleExerciseHistoryRegister()}
               />
             </Box>
           </VStack>
