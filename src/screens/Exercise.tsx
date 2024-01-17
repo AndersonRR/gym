@@ -64,25 +64,25 @@ export function Exercise() {
 
   useEffect(() => {
     async function fetchExerciseDetails() {
-      try {
-        setIsLoading(true);
-        const response = await api.get(`/exercises/${exerciseId}`);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setExercise(response.data);
-      } catch (error) {
-        const isAppError = error instanceof AppError;
-        const title = isAppError
-          ? error.message
-          : 'Não foi possível carregar os dados do exercício.';
+try {
+setIsLoading(true);
+const response = await api.get(`/exercises/${exerciseId}`);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+setExercise(response.data);
+} catch (error) {
+const isAppError = error instanceof AppError;
+const title = isAppError
+? error.message
+: "Não foi possível carregar os dados do exercício. Tá ligado??";
 
-        toast.show({
-          title,
-          placement: 'top',
-          bgColor: 'red.500',
-        });
-      } finally {
-        setIsLoading(false);
-      }
+toast.show({
+title,
+placement: "top",
+bgColor: "red.500",
+});
+} finally {
+setIsLoading(false);
+}
     }
     void fetchExerciseDetails();
   }, [exerciseId]);
