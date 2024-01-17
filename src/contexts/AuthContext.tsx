@@ -62,7 +62,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  const signOut = useCallback(async() => {
+  const signOut = useCallback(async () => {
     try {
       setIsLoadingStorageUser(true);
       setUser({} as UserDTO);
@@ -84,7 +84,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  const loadUserData = useCallback(async() => {
+  const loadUserData = useCallback(async () => {
     try {
       setIsLoadingStorageUser(true);
 

@@ -71,7 +71,9 @@ export function Exercise() {
         setExercise(response.data);
       } catch (error) {
         const isAppError = error instanceof AppError;
-        const title = isAppError ? error.message : 'Não foi possível carregar os dados do exercício.';
+        const title = isAppError
+          ? error.message
+          : 'Não foi possível carregar os dados do exercício.';
 
         toast.show({
           title,

@@ -40,7 +40,7 @@ export function History() {
       }
 
       void fetchHistory();
-    }, [toast])
+    }, [toast]),
   );
 
   return (

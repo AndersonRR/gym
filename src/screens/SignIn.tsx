@@ -132,7 +132,7 @@ export function SignIn() {
 
           <Button
             title="Acessar"
-            onPress={(event) => void handleSubmit(handleSignIn)(event)}
+            onPress={event => void handleSubmit(handleSignIn)(event)}
             isLoading={isLoadingLogin}
           />
         </Center>

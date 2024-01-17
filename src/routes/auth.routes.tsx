@@ -19,11 +19,11 @@ export function AuthRoutes() {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen
-        name='signIn'
+        name="signIn"
         component={SignIn}
       />
       <Screen
-        name='signUp'
+        name="signUp"
         component={SignUp}
       />
     </Navigator>

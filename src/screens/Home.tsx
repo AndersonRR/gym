@@ -32,10 +32,7 @@ export function Home() {
     return data;
   }, [groupSelected]);
 
-  const { isLoading, data } = useQuery<ExerciseDTO[]>(
-    ['exercises', groupSelected],
-    fetchExercises
-  );
+  const { isLoading, data } = useQuery<ExerciseDTO[]>(['exercises', groupSelected], fetchExercises);
 
   // async function fetchExercisesByGroup() {
   //   try {
@@ -68,7 +65,9 @@ export function Home() {
         // setGroupSelected(groups[0]);
       } catch (error) {
         const isAppError = error instanceof AppError;
-        const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.';
+        const title = isAppError
+          ? error.message
+          : 'Não foi possível carregar os grupos musculares.';
 
         toast.show({
           title,

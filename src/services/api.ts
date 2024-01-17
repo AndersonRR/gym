@@ -95,7 +95,7 @@ api.registerInterceptTokenManager = signOut => {
       } else {
         return Promise.reject(requestError);
       }
-    }
+    },
   );
 
   return () => {
